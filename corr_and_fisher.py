@@ -11,7 +11,7 @@ mtl_regions = ['alEC', 'pmEC', 'Tpole', 'PRC', 'RSC', 'PHC']
 conditions = ['study', 'test']
 
 # Find subjects
-subjects = glob.glob('/tmp/mridata1/R01_Data_Func_Conn_Amy/SceneEncRet/??-??/12????')
+subjects = glob.glob('/path_to_your_data/??-??/12????')
 dir_path = '/tmp/mridata4/NIA_R01_MRI_Data/SceneEncRet_fMRI'
 
 Left_Corr_vals_study = np.zeros(36)
@@ -37,11 +37,9 @@ def do_hemispheres():
         corr_val = np.corrcoef(data1,data2)
         corr_coef = corr_val[1,0]
         corr_coef_fisher = np.arctanh(corr_coef)
-        #print(corr_coef, corr_coef_fisher)
     elif hippo_check == 0:  # if it's bad, return a NaN and tell me
         corr_coef = np.NAN
         corr_coef_fisher = np.NAN
-        #print(corr_coef, corr_coef_fisher)
         print ('Bad MTL ROI ' + hemisphere + ' ' + mtl_region + ' ' + hippo_region + ' ' + condition)
     return corr_coef,corr_coef_fisher   
 
@@ -55,16 +53,13 @@ for subject in subjects:
     print (sub_ID)
     for hemisphere in hemispheres:
         hem= hemisphere[0]
-        #print (hemisphere)
         for condition in conditions:
-            #print (condition)
             if condition == 'study':
                 good_subject_check = os.path.join(dir_path,sub_ID,'good_motion_sub_study')
             elif condition == 'test':
                 good_subject_check = os.path.join(dir_path,sub_ID,'good_motion_sub_test')
             if os.path.isfile(good_subject_check): # if it's a 'good' subject, then continue
                 for mtl_region in mtl_regions:
-                    #print(mtl_region)
                     mtl_ts = os.path.join(subject,'timeseries',hem+'_'+mtl_region+'_'+condition+'_timeseries.1D') # this is the mtl region timeseries data
                     data1 = np.loadtxt(mtl_ts) # create a variable called 'data2' and store the timeseries data in it
                     mtl_check = os.path.join(subject,'Percent_Zero',hem+'_'+mtl_region+'_'+condition+'.txt') # this will signify if the data is good (1) or bad (0)
