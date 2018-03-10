@@ -11,7 +11,7 @@ mtl_regions = ['alEC', 'pmEC', 'Tpole', 'PRC', 'RSC', 'PHC'] # what specific MTL
 conditions = ['study', 'test'] # the specific testing conditions
 
 # Find subjects
-subjects = glob.glob('/path_to_your_data/??-??/12????') # state the path to where you data lives
+subjects = glob.glob('/path_to_your_data/??-??/12????') # state the path to where your data lives
 dir_path = '/tmp/mridata4/NIA_R01_MRI_Data/SceneEncRet_fMRI'
 
 num_data_points = len(hippo_regions) * len(mtl_regions)
@@ -28,7 +28,7 @@ Left_Corr_vals_fisher_test = np.zeros(num_data_points)
 Right_Corr_vals_fisher_test = np.zeros(num_data_points)
 
 def do_hemispheres():
-    print(subject+' '+hemisphere+' '+condition+' '+hippo_region+' '+mtl_region) # tell me what you are working on
+    print(subject+' '+hemisphere+' '+condition+' '+hippo_region+' '+mtl_region) # echo to the screen the specifics of what is being done
     hippo_ts = os.path.join(subject,'timeseries',hemisphere+'_Hippo_'+hippo_region+'_'+condition+'_timeseries.1D')  # this file has the timeseries data in a single column
     data2 = np.loadtxt(hippo_ts) # create a variable named 'data2' and store the timeseries data in it
     hippo_check = os.path.join(subject,'Percent_Zero',hemisphere+'_Hippo_'+hippo_region+'_'+condition+'.txt')  # this file contains a 1 if the data is good and a 0 if the data is bad (data could be bad due to poor coverage of the ROI)
@@ -51,7 +51,7 @@ for subject in subjects:
     j = 0
     k = 0
     l = 0
-    sub_ID = subject[-12:] # only grab the last 12 characters of the subject path
+    sub_ID = subject[-12:] # only grab the last 12 characters of the subject path (this is the subject identifier)
     print (sub_ID)
     for hemisphere in hemispheres:
         hem= hemisphere[0]
