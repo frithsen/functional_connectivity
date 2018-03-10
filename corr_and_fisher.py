@@ -12,7 +12,7 @@ conditions = ['study', 'test'] # the specific testing conditions
 
 # Find subjects
 subjects = glob.glob('/path_to_your_data/??-??/12????') # state the path to where your data lives
-dir_path = '/tmp/mridata4/NIA_R01_MRI_Data/SceneEncRet_fMRI'
+dir_path = 'path_to_top_directory_of_where_data_lives'
 
 num_data_points = len(hippo_regions) * len(mtl_regions)
 
@@ -31,10 +31,8 @@ def do_hemispheres():
     print(subject+' '+hemisphere+' '+condition+' '+hippo_region+' '+mtl_region) # echo to the screen the specifics of what is being done
     hippo_ts = os.path.join(subject,'timeseries',hemisphere+'_Hippo_'+hippo_region+'_'+condition+'_timeseries.1D')  # this file has the timeseries data in a single column
     data2 = np.loadtxt(hippo_ts) # create a variable named 'data2' and store the timeseries data in it
-    hippo_check = os.path.join(subject,'Percent_Zero',hemisphere+'_Hippo_'+hippo_region+'_'+condition+'.txt')  # this file contains a 1 if the data is good and a 0 if the data is bad (data could be bad due to poor coverage of the ROI)
-    f = open(hippo_check, "r+")
-    hippo_check = int(f.read())
-    f.close()
+    hippo_check_file = os.path.join(subject,'Percent_Zero',hemisphere+'_Hippo_'+hippo_region+'_'+condition+'.txt')  # this file contains a 1 if the data is good and a 0 if the data is bad (data could be bad due to poor coverage of the ROI)
+    f = np.loadtxt(hippo_check_file)
     if hippo_check == 1: # if the hippo_region timeseries data is good, do the correlation and return the correlation coefficient
         corr_val = np.corrcoef(data1,data2)
         corr_coef = corr_val[1,0]
@@ -64,10 +62,8 @@ for subject in subjects:
                 for mtl_region in mtl_regions:
                     mtl_ts = os.path.join(subject,'timeseries',hem+'_'+mtl_region+'_'+condition+'_timeseries.1D') # this is the mtl region timeseries data
                     data1 = np.loadtxt(mtl_ts) # create a variable called 'data1' and store the timeseries data in it
-                    mtl_check = os.path.join(subject,'Percent_Zero',hem+'_'+mtl_region+'_'+condition+'.txt') # this will signify if the data is good (1) or bad (0)
-                    f2 = open(mtl_check, "r+") # open the file 
-                    mtl_check = int(f2.read()) # read it
-                    f2.close() # close the file
+                    mtl_check_file = os.path.join(subject,'Percent_Zero',hem+'_'+mtl_region+'_'+condition+'.txt') # this will signify if the data is good (1) or bad (0)
+                    mtl_check = np.loadtxt(mtl_check_file)
                     if mtl_check == 1: # if the mtl timeseries data is good, continue
                         for hippo_region in hippo_regions: 
                             if hemisphere == 'Left':
