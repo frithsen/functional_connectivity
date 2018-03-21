@@ -27,16 +27,16 @@ Right_Corr_vals_fisher_study = np.zeros(num_data_points)
 Left_Corr_vals_fisher_test = np.zeros(num_data_points)
 Right_Corr_vals_fisher_test = np.zeros(num_data_points)
 
-def do_hemispheres():
+def run_correlation():
     print(subject+' '+hemisphere+' '+condition+' '+hippo_region+' '+mtl_region) # echo to the screen the specifics of what is being done
     hippo_ts = os.path.join(subject,'timeseries',hemisphere+'_Hippo_'+hippo_region+'_'+condition+'_timeseries.1D')  # this file has the timeseries data in a single column
     data2 = np.loadtxt(hippo_ts) # create a variable named 'data2' and store the timeseries data in it
     hippo_check_file = os.path.join(subject,'Percent_Zero',hemisphere+'_Hippo_'+hippo_region+'_'+condition+'.txt')  # this file contains a 1 if the data is good and a 0 if the data is bad (data could be bad due to poor coverage of the ROI)
     f = np.loadtxt(hippo_check_file)
     if hippo_check == 1: # if the hippo_region timeseries data is good, do the correlation and return the correlation coefficient
-        corr_val = np.corrcoef(data1,data2)
+        corr_val = np.corrcoef(data1,data2) # correlate 
         corr_coef = corr_val[1,0]
-        corr_coef_fisher = np.arctanh(corr_coef)
+        corr_coef_fisher = np.arctanh(corr_coef) # fisher transform coefficient 
     elif hippo_check == 0:  # if it's bad, return a NaN and tell me
         corr_coef = np.NAN
         corr_coef_fisher = np.NAN
@@ -68,17 +68,17 @@ for subject in subjects:
                         for hippo_region in hippo_regions: 
                             if hemisphere == 'Left':
                                 if condition == 'study':
-                                    [Left_Corr_vals_study[i],Left_Corr_vals_fisher_study[i]]=do_hemispheres()
+                                    [Left_Corr_vals_study[i],Left_Corr_vals_fisher_study[i]]=run_correlation()
                                     i+=1
                                 elif condition == 'test':
-                                    [Left_Corr_vals_test[j],Left_Corr_vals_fisher_test[j]]=do_hemispheres()
+                                    [Left_Corr_vals_test[j],Left_Corr_vals_fisher_test[j]]=run_correlation()
                                     j+=1                              
                             elif hemisphere == 'Right':
                                 if condition == 'study':
-                                    [Right_Corr_vals_study[k],Right_Corr_vals_fisher_study[k]]=do_hemispheres()
+                                    [Right_Corr_vals_study[k],Right_Corr_vals_fisher_study[k]]=run_correlation()
                                     k+=1
                                 elif condition == 'test':
-                                    [Right_Corr_vals_test[l],Right_Corr_vals_fisher_test[l]]=do_hemispheres()
+                                    [Right_Corr_vals_test[l],Right_Corr_vals_fisher_test[l]]=run_correlation()
                                     l+=1
                     elif mtl_check == 0:
                             print ('Bad Hippo ROI ' + hemisphere + ' ' + hippo_region + ' ' + condition)  # this means that the hippocampus timeseries datafile has been flagged as bad due to poor coverage. if this is the case, let me know and mark the next 6 rows of the output file with NaNs
