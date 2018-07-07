@@ -56,21 +56,15 @@ if [ ! -e freesurfer/mri ]; then
 fi
 
 
-# Create stricter masks 
+# Create stricter mask
 
  3dTstat -mean -prefix MEAN_study run_allruns_study+orig.
  3dAutomask -prefix MEAN_study_mask MEAN_study+orig.
-
- 3dTstat -mean -prefix MEAN_test run_allruns_test+orig.
- 3dAutomask -prefix MEAN_test_mask MEAN_test+orig.
-
 
 
 # ------------ check how much motion there is ---------------------- #
  /tmp/mribin/mri/check_motion_file.bash motion_censor_vector_verystrict_study.txt study 90 # this will output a file called 'good_motion_sub_study' if there isn't too much motion
 
-
-# ------------------- STUDY SESSION ---------------------------------
 
 if [ -e good_motion_sub_study ]; then  # if that file exists, carry on
 
