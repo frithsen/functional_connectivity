@@ -40,7 +40,7 @@ def run_correlation():
     elif hippo_check == 0:  # if it's bad, return a NaN and tell me
         corr_coef = np.NAN
         corr_coef_fisher = np.NAN
-        print ('Bad MTL ROI ' + hemisphere + ' ' + mtl_region + ' ' + hippo_region + ' ' + condition)
+        print ('Bad Hippo ROI '+ hippo_region + '_' +hemisphere)
     return corr_coef,corr_coef_fisher   
 
 
@@ -81,7 +81,7 @@ for subject in subjects:
                                     [Right_Corr_vals_test[l],Right_Corr_vals_fisher_test[l]]=run_correlation()
                                     l+=1
                     elif mtl_check == 0:
-                            print ('Bad Hippo ROI ' + hemisphere + ' ' + hippo_region + ' ' + condition)  # this means that the hippocampus timeseries datafile has been flagged as bad due to poor coverage. if this is the case, let me know and mark the next 6 rows of the output file with NaNs
+                            print ('Bad MTL ROI ' + hemisphere + ' ' + mtl_region ) # this means that the mtl timeseries datafile has been flagged as bad due to poor coverage. if this is the case, let me know and mark the next 6 rows of the output file with NaNs
                             if hemisphere == 'Left' and condition == 'study':
                                 Left_Corr_vals_study[i:i+6] = np.NAN
                                 Left_Corr_vals_fisher_study[i:i+6] = np.NAN
